@@ -72,12 +72,17 @@ static BOOL isAuthChallengeStatusCode(NSInteger statusCode) {
 #pragma mark Private
 
 - (void)doSendHTTPRequest {
+    NSString *body;
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     NSString *URLString = [[command objectForKey:@"URLString"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *URL = [NSURL URLWithString:URLString];
     NSString *method = [command objectForKey:@"method"];
-    NSString *body = [command objectForKey:@"body"];
+    if ([method isEqual:@"GET"]) {
+      body = @"";
+    } else {
+      body = [command objectForKey:@"body"];
+    }
     NSArray *headers = [command objectForKey:@"headers"];
     BOOL followRedirects = [[command objectForKey:@"followRedirects"] boolValue];
     
